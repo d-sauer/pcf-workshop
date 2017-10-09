@@ -7,3 +7,7 @@ applications:
   path: target/demo-0.0.1-SNAPSHOT.jar
   services:
     - demo-mysql
+  env:
+    SPRING-ACTIVEMQ-BROKER-URL: tcp://10.10.18.79:61616
+    SPRING-ACTIVEMQ-USER: admin
+    SPRING-ACTIVEMQ-PASSWORD: admin

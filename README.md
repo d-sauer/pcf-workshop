@@ -113,9 +113,50 @@ Add new created service to the manifest.yml
         }
     }    
     
+## Connect to external ActiveMQ
+
+1. Update manifest.yml
     
     
+    
+    ---
+    applications:
+    - name: <APP NAME>
+      memory: 800M
+      random-route: true
+      path: target/demo-0.0.1-SNAPSHOT.jar
+      services:
+        - <APP NAME>-mysql
+      env:
+        SPRING-ACTIVEMQ-BROKER-URL: tcp://10.10.18.79:61616
+        SPRING-ACTIVEMQ-USER: admin
+        SPRING-ACTIVEMQ-PASSWORD: admin
+        
+        
+2. Send message to application
+
+
+    curl -i -H "Content-Type: application/json" -X POST -d '{"message":"test1"}' http://demo.local.pcfdev.io/message
+
+3. Get all messages
+
+    
+    curl  http://demo.local.pcfdev.io/messages
+
+
+
+# Useful commands 
+
+- Tail logs: `cf logs <app name>`
+- Delete application: `cf delete <app name>`
+- List all application: `cf apps`
+- Delete service: `cf delete-service <service name>`
+
     
 # Resources:
 
-https://docs.pivotal.io/pivotalcf/1-12/buildpacks/java/configuring-service-connections/spring-service-bindings.html
+- https://docs.pivotal.io/pivotalcf/1-12/installing/highlights.html
+- https://docs.pivotal.io/pivotalcf/1-12/concepts/understand-cf-networking.html
+- https://pivotal.io/platform
+- https://pivotal.io/pcf-dev
+- https://docs.pivotal.io/pivotalcf/1-12/buildpacks/java/configuring-service-connections/spring-service-bindings.html
