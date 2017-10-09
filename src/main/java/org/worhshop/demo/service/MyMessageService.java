@@ -20,7 +20,7 @@ public class MyMessageService {
 
     private static final Logger logger = LoggerFactory.getLogger(MyMessageService.class);
 
-    @Value("${spring.application.name:demo}")
+    @Value("${vcap.application.name:demo}")
     private String sender;
 
     private String messageTopicName = "demo.message.topic";
