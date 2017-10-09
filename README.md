@@ -29,7 +29,9 @@ This workshop will teach you
     
 
 
-## PCF Deployment
+# PCF Deployment
+
+## Deploying application
 
 Goal of this exercise is to deploy this existing service to the PCF.
 
@@ -43,7 +45,7 @@ Goal of this exercise is to deploy this existing service to the PCF.
 
     ---
     applications:
-    - name: <YOUR USERNAME or demo>
+    - name: <APP NAME>
       memory: 800M
       random-route: true
       path: target/demo-0.0.1-SNAPSHOT.jar
@@ -61,4 +63,59 @@ Goal of this exercise is to deploy this existing service to the PCF.
     
     cf logs <app name>
     
-   
+    
+## Create MySql service
+
+1. List available services:
+
+
+    cf m
+    
+2. Create MySql service
+
+
+    cf create-service p-mysql 512mb <APP NAME>-mysql
+    
+
+> to delete service use `cf delete-service test`
+> to list available services in the current space: `cf s`
+
+3. Update application manifest.yml
+
+Add new created service to the manifest.yml
+
+    ---
+    applications:
+    - name: <APP NAME>
+      memory: 800M
+      random-route: true
+      path: target/demo-0.0.1-SNAPSHOT.jar
+      services:
+        - <APP NAME>-mysql
+        
+4. Update service to use PCF service broker
+
+4.1. Add specific cloud config
+
+
+    package org.worhshop.demo.configuration;
+    
+    import org.springframework.cloud.config.java.AbstractCloudConfig;
+    import org.springframework.context.annotation.Bean;
+    
+    import javax.sql.DataSource;
+    
+    public class CloudConfig extends AbstractCloudConfig {
+    
+        @Bean
+        public DataSource demoDataSource() {
+            return connectionFactory().dataSource();
+        }
+    }    
+    
+    
+    
+    
+# Resources:
+
+https://docs.pivotal.io/pivotalcf/1-12/buildpacks/java/configuring-service-connections/spring-service-bindings.html
